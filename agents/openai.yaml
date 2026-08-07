@@ -1,0 +1,4 @@
+interface:
+  display_name: "SiC Power Device TCAD Research Skill"
+  short_description: "Atlas-based SiC power-device TCAD research assistant"
+  default_prompt: "Use $sic-power-device-tcad-research-skill to build and diagnose a Silvaco Atlas SiC power-device simulation deck."
