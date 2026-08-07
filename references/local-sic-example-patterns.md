@@ -1,6 +1,6 @@
 # Local SiC Example Patterns
 
-These notes summarize patterns observed in the local Silvaco example tree at `D:\softwares\sedatools\examples\deckbuild\4.2.2.R\sic`. They are intended for expert guidance when adapting vendor examples to SiC power-device research decks.
+These notes summarize patterns observed in Silvaco SiC example decks, typically found under a discovered examples directory such as `<SILVACO_EXAMPLES_DIR>\sic`. They are intended for expert guidance when adapting vendor examples to SiC power-device research decks.
 
 ## 4H-SiC Material Blocks
 
@@ -146,4 +146,6 @@ Common mistakes:
 - Treating a DLTS trap level as a universal SiC defect without verifying measurement conditions.
 - Mixing bulk traps and interface traps.
 - Using DC-only solve logic for a transient trap-emission problem.
+
+
 

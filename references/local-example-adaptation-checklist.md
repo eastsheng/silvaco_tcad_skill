@@ -1,6 +1,6 @@
 # Local Example Adaptation Checklist
 
-Use this checklist when adapting local Silvaco examples from `D:\softwares\sedatools\examples\deckbuild\4.2.2.R` into a new SiC power-device research deck.
+Use this checklist when adapting local Silvaco examples from a discovered or user-provided examples directory such as `<SILVACO_EXAMPLES_DIR>` into a new SiC power-device research deck.
 
 ## Before Reusing an Example
 
@@ -38,4 +38,6 @@ Use this checklist when adapting local Silvaco examples from `D:\softwares\sedat
 - Forgetting that local examples may be demonstration decks, not publication-ready calibrated models.
 - Comparing simulated and measured I-V curves without matching area normalization and electrode definitions.
 - Letting electrode names drift between `electrode`, `contact`, `solve`, `log`, and `extract`.
+
+
 

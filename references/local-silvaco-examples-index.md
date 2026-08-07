@@ -1,8 +1,8 @@
 # Local Silvaco Atlas Examples Index
 
-Source tree inspected: `D:\softwares\sedatools\examples\deckbuild\4.2.2.R`
 
-Use this file as a routing index when the user asks for examples from the locally installed Silvaco TCAD package. Treat these examples as vendor examples for learning deck patterns, not as calibrated recipes for a new device unless the material system, geometry, temperature, and model coefficients match the research target.
+
+Use this file as a routing index when the user asks for examples from a locally installed Silvaco TCAD package. Do not assume a fixed installation path. First use `references/tcad-example-discovery.md` or `scripts/find-silvaco-examples.ps1` to locate that machine's examples. Treat all examples as vendor examples for learning deck patterns, not as calibrated recipes for a new device unless the material system, geometry, temperature, and model coefficients match the research target.
 
 ## High-Value Directories
 
@@ -43,4 +43,7 @@ The installed `sic` directory contains examples `sicex01` through `sicex14`.
 - For high-voltage breakdown convergence and arithmetic precision, start with `sicex01` and `sicex11`.
 - For process/implant background, use `sicex04` to `sicex06`, but label them as implant/process examples rather than Atlas electrical device decks.
 - For non-SiC examples in `power`, `diode`, and `mos*`, extract deck structure and solver/extraction patterns only; replace material, mobility, impact, ionization, lifetime, interface, and contact assumptions for 4H-SiC.
+
+
+
 
