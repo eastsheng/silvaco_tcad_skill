@@ -34,6 +34,8 @@ JSON output:
 powershell -ExecutionPolicy Bypass -File .\scripts\find-silvaco-examples.ps1 -Json
 ```
 
+The JSON contains `DeckCount`, `DeclaredExamples`, `SupportFileCount`, and `Decks`. An index may describe examples whose payload was not installed. Route only to a deck listed in `Decks`; use index-only entries as documentation, not as locally runnable examples.
+
 ## Generic Locations To Consider
 
 Check paths derived from these sources rather than committing machine-specific paths:
@@ -63,6 +65,8 @@ Useful file types:
 - `*.html`, `*examples.index`: vendor explanations and example index text.
 - `*.dat`, `*.exp`: measured or comparison data.
 - `*.set`, `*.setx`: TonyPlot settings.
+
+Before adapting a deck, also confirm that files named by `mesh infile`, `load infile`, `tfile`, `doping infile`, or plotting commands exist in that example folder. A deck without its structure/data/support files may be useful as syntax evidence but is not necessarily runnable.
 
 ## Cross-Computer Behavior
 

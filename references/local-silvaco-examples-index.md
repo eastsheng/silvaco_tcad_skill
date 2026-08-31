@@ -17,7 +17,7 @@ Use this file as a routing index when the user asks for examples from a locally 
 
 ## SiC Example Files
 
-The installed `sic` directory contains examples `sicex01` through `sicex14`.
+Vendor indexes can describe `sicex01` through `sicex14` even when only a subset of payload directories is installed. On the machine observed while maintaining this skill, `4.2.2.R` had all 14 main decks (plus three `sicex10` auxiliary decks), whereas `4.2.5.R` physically had only `sicex02`-`06`, `sicex12`, and `sicex13`. Always use discovery output rather than this historical observation to decide whether a deck can be opened.
 
 | Example | Observed title or purpose | Most useful patterns |
 | --- | --- | --- |
@@ -29,8 +29,8 @@ The installed `sic` directory contains examples `sicex01` through `sicex14`.
 | `sicex06` | Al implant in 4H-SiC without screen oxide | Implant profile extraction and no-screen comparison. |
 | `sicex07` | Enhancement-mode IEMOSFET in 4H-SiC | 4H-SiC MOSFET, SiC/oxide interface states, threshold voltage, oxide electric field, on-resistance, breakdown extraction. |
 | `sicex08` | 3D SiC MOSFET | 3D 4H-SiC MOSFET geometry, 3D doping/electrodes, precision settings, Id-Vd/Id-Vg style analysis. |
-| `sicex09` | SiC layout/rounding example | Layout-driven/rounded geometry flow; use for edge geometry and field-crowding studies. |
-| `sicex10` | SiC 3D or layout-related flow with auxiliary decks | GDS/layout flow, MPI/PAM method use, 4H-SiC material blocks, anisotropic impact. |
+| `sicex09` | 3D SiC trench IGBT | Victory-based historical example; use only for transferable rounded-corner/field-crowding insight and translate it using Atlas first, Athena if process history is essential, and DevEdit only for necessary remeshing. |
+| `sicex10` | 3D trench-shape effect on I-V and breakdown | Layout-driven flow with Athena implant auxiliaries; voltage-to-current controlled breakdown continuation. |
 | `sicex11` | 2D versus 3D breakdown comparison | 4H-SiC breakdown, 2D/3D comparison, `material ... ZETA`, anisotropic impact model setup. |
 | `sicex12` | 4H-SiC Schottky diode DLTS | SBD, trap definition, transient/capacitance extraction, temperature sweep. |
 | `sicex13` | Alternative inversion layer mobility model | SiC/oxide interface traps, `INTTRAP`, fixed interface charge, probe-based inversion mobility behavior. |
@@ -38,6 +38,8 @@ The installed `sic` directory contains examples `sicex01` through `sicex14`.
 
 ## Routing Rules
 
+- For transfer, output, IGBT latch-up, or breakdown physics/model/parameter selection, read `references/device-characteristics-model-matrix.md`; use `powerex03` for silicon electrothermal latch-up, `powerex04` for IGBT output families, `powerex07`/`08` for silicon breakdown methods, and `sicex07` for 4H-SiC MOSFET transfer/output/breakdown sequencing.
+- For IGBT structure, mesh, gate oxide, and electrodes, use `references/igbt-mosfet-structure.md`; start with `powerex03`/`powerex04` for a simple Atlas-built planar IGBT and `sicex09` for a process-built 3D trench SiC IGBT.
 - For SiC MOSFET channel/interface questions, start with `sicex07` and `sicex13`; use `sicex02` for trench MOSFET anisotropic mobility and `sicex08` for 3D setup.
 - For SiC Schottky/JBS reverse leakage or breakdown, start with `sicex14`; use `sicex12` for trap/DLTS behavior.
 - For high-voltage breakdown convergence and arithmetic precision, start with `sicex01` and `sicex11`.

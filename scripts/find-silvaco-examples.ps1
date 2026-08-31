@@ -66,11 +66,19 @@ foreach ($base in $candidateRoots) {
         )
     } | ForEach-Object {
         $indexFiles = Get-ChildItem -LiteralPath $_.FullName -File -Filter '*examples.index' -ErrorAction SilentlyContinue
-        $deckCount = (Get-ChildItem -LiteralPath $_.FullName -Recurse -File -Include *.in,*.cmd -ErrorAction SilentlyContinue | Measure-Object).Count
+        $decks = @(Get-ChildItem -LiteralPath $_.FullName -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in '.in', '.cmd' })
+        $supportFiles = @(Get-ChildItem -LiteralPath $_.FullName -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Extension -in '.dat', '.exp', '.set', '.setx', '.str' })
+        $declaredExamples = 0
+        foreach ($indexFile in $indexFiles) {
+            $declaredExamples += ([regex]::Matches((Get-Content -Raw -LiteralPath $indexFile.FullName), '\{subsection\}')).Count
+        }
         $results.Add([pscustomobject]@{
             Path = $_.FullName
             Name = $_.Name
-            DeckCount = $deckCount
+            DeckCount = $decks.Count
+            DeclaredExamples = $declaredExamples
+            SupportFileCount = $supportFiles.Count
+            Decks = @($decks | ForEach-Object { $_.FullName.Substring($_.FullName.IndexOf($_.Name)) } | Sort-Object)
             IndexFiles = ($indexFiles | Select-Object -ExpandProperty Name) -join '; '
         })
     }
@@ -80,5 +88,5 @@ $unique = $results | Sort-Object Path -Unique
 if ($Json) {
     $unique | ConvertTo-Json -Depth 4
 } else {
-    $unique | Format-Table -AutoSize
+    $unique | Select-Object Path, Name, DeckCount, DeclaredExamples, SupportFileCount, IndexFiles | Format-Table -AutoSize
 }
