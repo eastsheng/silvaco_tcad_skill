@@ -2,6 +2,8 @@
 
 These templates are now the first source for process-built structures. Replace placeholders and validate material-specific process physics.
 
+These examples intentionally spell out release-sensitive implant geometry and checkpoint behavior. Read `athena-process-deck-contract.md` before adapting them.
+
 ## Vertical power MOSFET/IGBT top-cell flow
 
 ```atlas
@@ -46,7 +48,7 @@ electrode name=collector backside
 structure outfile=power_cell_process.str
 ```
 
-For an IGBT, the collector/buffer/field-stop stack must be present in the initialized/imported substrate or added by an appropriate epitaxy/process flow. Do not create a MOSFET drain backside and merely rename it collector.
+For an IGBT, the collector/buffer/field-stop stack must be present in the initialized/imported substrate or added by a material- and release-verified process model. The Athena 2015 `EPITAXY` command is silicon-only and must not be used as SiC epitaxy physics. Do not create a MOSFET drain backside and merely rename it collector.
 
 ## Polygon trench plus mirrored cell
 
@@ -69,7 +71,7 @@ For sidewall implantation:
 
 ```atlas
 implant <species> dose=<dose> energy=<energy> \
-  tilt=<tilt> rotation=<rotation> bca n.ion=<particles>
+  bca crystal tilt=<tilt> rotation=<rotation> n.ion=<particles>
 ```
 
 Run complementary rotations when both sidewalls must receive equivalent dose. Inspect shadowing and bottom dose separately.
@@ -137,3 +139,38 @@ mesh infile=device_mesh.str
 ```
 
 Compare Athena and DevEdit structures before device simulation: total dopant dose, junction positions, gate oxide, narrow regions, trench geometry and electrode labels must be preserved.
+
+## 4H-SiC BCA orientation template
+
+```atlas
+go athena
+<line x/y mesh>
+init sic_4h rot.sub=<wafer_reference_rotation>
+
+implant aluminum dose=<cm-2> energy=<keV> bca crystal \
+  tilt=<beam_tilt_deg> rotation=<beam_rotation_deg> \
+  miscut.th=<wafer_miscut_deg> miscut.ph=<miscut_azimuth_deg> \
+  n.ion=<converged_particle_count> mcseed=<documented_seed>
+
+structure outfile=sic_implanted.str
+```
+
+`MISCUT.TH/PH` use Athena's internal crystallographic frame, not the laboratory frame established by `ROT.SUB`. Run ion-count/seed sensitivity and validate against SIMS or another appropriate profile source. Activation is a separate calibrated stage.
+
+## Restart-safe process continuation
+
+```atlas
+go athena
+init infile=<checkpoint.str>
+
+# Reissue every model declaration needed below; STRUCTURE did not store them.
+method <diffusion_oxidation_models>
+impurity <species_and_material_parameters>
+oxide <oxidation_parameters>
+<rate machine definitions if used>
+
+diffuse time=<value> minutes temperature=<C> nitrogen
+structure outfile=<continued.str>
+```
+
+Before accepting the restart, compare it against an uninterrupted reference at the same process time: interfaces, chemical/active profiles, defects, stress and mesh must agree within declared tolerances.

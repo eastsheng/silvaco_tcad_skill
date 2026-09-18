@@ -4,6 +4,8 @@
 
 Enable the smallest physically sufficient model set, calibrate it, then add complexity one mechanism at a time. A model keyword and its coefficient set are inseparable.
 
+For the manual-derived mechanism matrix, release/default evidence rules, and the `INTDEFECTS` scope correction, read `atlas-model-selection-and-parameter-evidence.md`.
+
 ## MODELS
 
 ```atlas
@@ -60,7 +62,7 @@ trap donor    e.level=<eV> density=<cm-3> sign=<cm2> sigp=<cm2>
 
 Key parameters describe trap type, energy level/reference, density, degeneracy, and electron/hole capture cross-sections. Confirm whether energy is referenced to a band edge or intrinsic level in the chosen statement.
 
-Traps affect charge, recombination-generation, transient capture/emission, leakage, threshold shift, and dynamic on-resistance. Use interface-specific statements for interface-state distributions.
+Traps affect charge, recombination-generation, transient capture/emission, leakage, threshold shift, and dynamic on-resistance. Use interface-specific statements for interface-state distributions. In the Atlas 2018 manual, `INTDEFECTS` is a TFT band-gap interface-defect model; do not treat it as a generic SiC/SiO2 interface command without installed-release documentation of the intended equation.
 
 ## Self-heating
 

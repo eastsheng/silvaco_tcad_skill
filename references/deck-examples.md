@@ -1,6 +1,7 @@
 # Reusable Atlas deck patterns
 
 These are templates, not calibrated devices. Replace every angle-bracket placeholder and verify exact model keywords against the installed release.
+For reusable DeckBuild control-flow, extraction, overlay, and TonyPlot evidence patterns, read `bundled-deckbuild-tonyplot-examples.md`.
 
 ## Vertical SiC diode skeleton
 

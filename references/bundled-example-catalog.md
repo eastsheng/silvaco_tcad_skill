@@ -15,6 +15,7 @@ Use these examples before searching the local Silvaco installation or manual. Th
 | Process-built MOSFET/IGBT/diode/termination | `bundled-athena-examples.md` | substrate, multilayer mask, etch, implant, anneal, oxide, metal and handoff |
 | Trench, spacer, guard ring, field plate | `bundled-athena-examples.md` | polygon etch, directional/isotropic etch, mirrored cell and repeated windows |
 | Reproduce/adapt an installed MOSFET, IGBT or HEMT case | `local-mosfet-igbt-hemt-reproduction.md` | exhaustive source-availability map, run graph, dependencies and family-specific contracts |
+| HEMT/HFET/PHEMT/GaN FET structure and characteristics | `bundled-hemt-models-and-examples.md` | layers, heterojunctions, polarization, traps, DC, breakdown, collapse, RF and electrothermal routes |
 
 ## Adaptation contract
 

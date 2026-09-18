@@ -15,7 +15,7 @@ Run `scripts/index-mosfet-igbt-hemt-examples.ps1 -Root <deckbuild-version-root> 
 
 ## Installed source coverage
 
-The two observed roots contain 66 distinct named, source-available main examples after category/example de-duplication, plus auxiliary decks. The main-deck coverage is:
+The two observed roots contain 86 distinct named, source-available main examples after full-library scanning and category/example de-duplication, plus auxiliary decks. The earlier six-directory scan found only 66 and was incomplete; always use the current full-root indexer.
 
 | Family | Distinct source-available cases | Scope |
 | --- | ---: | --- |
@@ -25,8 +25,21 @@ The two observed roots contain 66 distinct named, source-available main examples
 | `sic` | 5 relevant | T-MOSFET, DMOS, IEMOSFET, 3D MOSFET, and a Victory-only 3D trench IGBT |
 | `hemt` | 6 | AlGaAs/GaAs HEMT and PHEMT |
 | `ganfet` | 8 | source-available AlGaN/GaN HEMT/CAVET cases |
+| other local categories | 20 | Athena process/stress/diffusion, ESD, MC Device, Mercury, noise, quantum and radiation transistor cases |
 
 Some later cases are declared by `4.2.5.R` indexes but have no local `.in` source. Treat them as documentation-only and do not claim exact reproduction from this installation.
+
+### Cases outside the six obvious device directories
+
+The full-root scan also found source decks that a directory-only search misses:
+
+- Athena process: `advdifex11`, `andfex13`, `anmiex05`, `anstex02`, `anstex03` for halo diffusion, defect-cluster anneal, geometry scaling and SiGe stress.
+- ESD/electrothermal: `esdex03`, `esdex04`, `esdex05` for HBM and second breakdown.
+- Monte Carlo/quantum: `mcdeviceex02`-`05`, `quantumex07`, `quantumex08`, `quantumex16` for nanoscale MOSFET/FinFET transport.
+- HEMT quantum/alternative solver: `quantumex03`, `quantumex09`, `mercuryex04`.
+- Noise/radiation: `noiseex03`, `radex03`.
+
+These specialized solvers/modules do not override the default `Atlas -> Athena -> DevEdit` construction priority. Use them only when the requested observable requires the corresponding transport, quantum, ESD, noise or radiation capability and the installed license supports it.
 
 ## MOSFET case map
 

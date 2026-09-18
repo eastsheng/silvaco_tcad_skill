@@ -2,6 +2,8 @@
 
 Atlas is statement-oriented. Parameters may be logical, integer, real, character, or list values. Abbreviations must remain unambiguous.
 
+For the complete manual-derived contract and state rules, also read `atlas-language-and-deck-contract.md`.
+
 ## Required order
 
 ```text
@@ -9,11 +11,11 @@ MESH / X.MESH / Y.MESH / Z.MESH
 REGION
 ELECTRODE
 DOPING
-MATERIAL / CONTACT / INTERFACE
-MODELS / MOBILITY / IMPACT / TRAP
+MATERIAL / MODELS / MOBILITY / IMPACT / TRAP / CONTACT / INTERFACE
+THERMCONTACT (before METHOD whenever LAT.TEMP is used)
 METHOD
-SOLVE
-LOG / SAVE / OUTPUT / EXTRACT
+LOAD / LOG / SOLVE / SAVE / OUTPUT
+EXTRACT / TONYPLOT
 ```
 
 ## Statement map
@@ -24,7 +26,7 @@ LOG / SAVE / OUTPUT / EXTRACT
 | Geometry | `REGION`, `ELECTRODE` | materials and terminals |
 | Profiles | `DOPING`, `DOSEXTRACT` | impurity profiles |
 | Properties | `MATERIAL`, `CONTACT`, `INTERFACE`, `THERMCONTACT` | bulk, interface, electrical, thermal data |
-| Physics | `MODELS`, `MOBILITY`, `IMPACT`, `TRAP`, `DEFECTS`, `INTDEFECTS` | transport, recombination, avalanche, defects |
+| Physics | `MODELS`, `MOBILITY`, `IMPACT`, `TRAP`, `DEFECTS` | transport, recombination, avalanche, defects; `INTDEFECTS` is TFT-specific in the 2018 manual and requires version/equation verification before other use |
 | Numerics | `METHOD`, `OPTIONS`, `SYMBOLIC` | nonlinear/linear solver control |
 | Bias | `SOLVE`, `CURVETRACE`, `LOAD` | initialize and sweep |
 | Results | `LOG`, `SAVE`, `OUTPUT`, `PROBE`, `EXTRACT`, `MEASURE` | record and post-process |

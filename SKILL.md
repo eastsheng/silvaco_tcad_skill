@@ -20,14 +20,30 @@ Solve from the bundled references and examples first. Distinguish bundled templa
    - IGBT electrothermal/latch-up/breakdown built-in examples: `references/bundled-sic-igbt-examples.md`
    - Thermal conductivity/interface/boundary built-in examples: `references/bundled-thermal-examples.md`
    - Athena complex-process built-in examples: `references/bundled-athena-examples.md`
+   - HEMT/HFET, PHEMT, GaN polarization/trap/breakdown/RF/electrothermal examples: `references/bundled-hemt-models-and-examples.md`
    - Complete local MOSFET/IGBT/HEMT inventory and reproduction map: `references/local-mosfet-igbt-hemt-reproduction.md` (read first for reproducing or adapting any local transistor example)
 3. Read the relevant bundled references:
    - IGBT/MOSFET geometry, mesh, oxide, and electrodes: `references/igbt-mosfet-structure.md` (read first for any IGBT or MOSFET structure task)
    - Transfer/output/latch-up/breakdown model and parameter matrix: `references/device-characteristics-model-matrix.md` (read for any electrical-characteristic task)
    - Bulk/doping-dependent thermal conductivity and gate-oxide/collector thermal boundaries: `references/thermal-properties-and-boundaries.md` (read for any self-heating or thermal-interface task)
    - Complete 4H-SiC IGBT electrothermal model stack and Atlas-default audit: `references/sic-igbt-electrothermal-models.md` (read first for SiC IGBT electrothermal simulations)
+   - HEMT layer, polarization, trap, contact, transport and bias protocols: `references/bundled-hemt-models-and-examples.md` (read first for any HEMT/HFET/PHEMT/GaN-FET task)
    - Athena process construction, geometry, mesh, and simulator handoff: `references/athena-complex-structure.md` (read first for process-built structures)
+   - Athena 2015 source/version map: `references/athena-2015-manual-map.md` (read for manual provenance, module boundaries, or release-default checks)
+   - Athena deck/restart/electrode contract: `references/athena-process-deck-contract.md` (read before generating or restarting a complete Athena flow)
+   - Athena process mesh, deposition, etch, and oxide-grid rules: `references/athena-mesh-deposition-etch.md` (read for complex geometry and process mesh)
+   - Athena implant, diffusion, activation, and oxidation: `references/athena-implant-diffusion-oxidation.md` (read for process-model selection and calibration)
    - Language and commands: `references/atlas-command-index.md`
+   - Atlas 2018 source/version map: `references/atlas-2018-manual-map.md` (read when a bundled rule needs manual provenance or release comparison)
+   - Atlas syntax, ordering, and state invariants: `references/atlas-language-and-deck-contract.md` (read before generating or auditing any complete deck)
+   - Model/parameter evidence rules: `references/atlas-model-selection-and-parameter-evidence.md` (read when selecting models, defaults, coefficients, or overrides)
+   - Numerical and bias state machine: `references/atlas-numerics-and-bias-state-machine.md` (read for sweeps, restart, breakdown, latch-up, or convergence work)
+   - DeckBuild 2018 source map: `references/deckbuild-2018-manual-map.md` (read for command provenance and release behavior)
+   - DeckBuild run graph, variables, loops, batch and source files: `references/deckbuild-run-orchestration.md` (read for multi-simulator or parameterized runs)
+   - DeckBuild extraction and sweep governance: `references/deckbuild-extract-and-sweeps.md` (read for every reported scalar/curve or extract-driven branch)
+   - TonyPlot 2018 source map: `references/tonyplot-2018-manual-map.md` (read for command-line, set-file and overlay provenance)
+   - TonyPlot quantitative audit: `references/tonyplot-quantitative-audit.md` (read for mesh/field/thermal inspection, cutlines, overlays or figures)
+   - Bundled DeckBuild/TonyPlot patterns: `references/bundled-deckbuild-tonyplot-examples.md`
    - Mesh, regions, electrodes, doping: `references/structure-mesh-doping.md`
    - SiC properties and contacts: `references/sic-materials-contacts.md`
    - Physical models: `references/physics-models.md`
@@ -46,7 +62,7 @@ Solve from the bundled references and examples first. Distinguish bundled templa
 5. Follow the selected route:
    - Atlas-only: coordinate contract -> mesh -> regions/gate oxide -> electrodes -> doping -> material/contact/interface -> models -> method -> solve -> log/save/extract.
    - Atlas + DevEdit: create/export the direct structure -> use DevEdit only for necessary mesh/geometry refinement -> return to Atlas.
-   - Athena + Atlas: process coordinate contract -> process mesh -> substrate/epitaxy -> mask/deposit/etch -> implant/diffusion/oxidation -> contacts/electrodes -> structure audit -> Atlas.
+   - Athena + Atlas: process coordinate contract -> process mesh -> substrate/verified epitaxy or imported stack -> mask/deposit/etch -> implant/diffusion/oxidation -> contacts/electrodes -> structure audit -> Atlas.
    - Athena + DevEdit + Atlas: use only when the Athena structure needs device-oriented remeshing or cleanup before Atlas.
 6. State units and never silently transfer silicon defaults or literature coefficients to 4H-SiC.
 7. Separate syntax validity, numerical convergence, and physical calibration.
@@ -59,14 +75,25 @@ Solve from the bundled references and examples first. Distinguish bundled templa
 14. For 4H-SiC IGBT electrothermal work, list every enabled model, every controlling parameter, its unit, Atlas release/default source, override status, and calibration evidence. Treat absent, conflicting, or unprinted defaults as unknown—not zero and not trustworthy.
 15. For a reproduction request, inspect the complete example directory and return the main/auxiliary run graph. Never copy only one `.in`, mistake generated checkpoints for startup dependencies, or claim a documentation-only index entry is executable.
 16. For HEMT/HFET work, preserve the heterostructure layer/composition table, band alignment, polarization method, interface/surface charge and traps, Schottky/ohmic contact assumptions, transport model, stress history, and DC/AC/transient initialization. Do not transfer GaAs, GaN, Si, or SiC parameters across materials.
+17. Treat a deck as an ordered state machine. Record inherited electrode biases, reload a common conditioning state for every curve-family branch, and reissue thermal contacts after every Atlas restart because they are not stored in solution files.
+18. Do not use `INTDEFECTS` as a generic SiC MOS interface-state command: the Atlas 2018 manual documents it for TFT band-gap interface defects. Require installed-release evidence for the intended SiC equation before enabling it.
+19. Treat Athena `STRUCTURE` files as geometry/mesh/solution checkpoints, not complete process recipes. Reissue non-persistent model and machine definitions after restart and verify equivalence with the uninterrupted flow.
+20. In the Athena 2015 source, `EPITAXY` is silicon-on-silicon and inherently 1D; never present it as SiC epitaxy physics. Without Elite, `DEPOSIT` is conformal geometry. Label every Athena step as physical model, calibrated geometry, or imported profile.
+21. In reproducible implant decks, state `CRYSTAL/AMORPHOUS`, tilt, rotation, dose convention, screen stack, model/table source, damage, activation, and statistical convergence. Never accept the 2015 implicit implant angles as intentional settings.
+22. Model a DeckBuild workflow as a serial process chain followed by independent device-characteristic branches. Do not let transfer, output, breakdown, latch-up, or electrothermal branches inherit unintended state from one another.
+23. Every extracted metric must declare its source state, mathematical criterion, search window, coordinate/material scope, unit, normalization, valid range and failure behavior. Ensure required spatial fields are requested with Atlas `OUTPUT` before `SAVE`.
+24. A TonyPlot image is not sufficient evidence by itself. Preserve numeric source files, simulator and plot versions, `.setx`, overlay order, cutline/cutplane coordinates, transforms, axes/units and export geometry.
 
 ## Output expectations
 
 - Explain syntax, parameter role, physical meaning, and likely failure mode.
 - For IGBT/MOSFET structures, return a coordinate table for every region and electrode, oxide thickness at the channel and trench bottom/corner, and a mesh-refinement table tied to physical features.
 - For Athena process flows, return a chronological process table with purpose, command, geometry/material change, mesh consequence, calibration requirement, and saved checkpoint.
+- For every Athena operation, classify it as `physical process model`, `calibrated geometry construction`, or `imported measured/profile data`, and state the required module.
 - For local reproduction, return source version/path, module requirements, all startup dependencies, simulator/run graph, generated checkpoints and the exact state used to begin each characteristic.
 - For electrical characteristics, return the bias protocol, required/optional models, exact command family, parameter-modification table, extraction definition, and validation data needed for that material.
+- For a multi-run study, return the DeckBuild run graph, common checkpoints, branch-specific declarations, source-file manifest, deterministic filenames and results-file schema.
+- For figures, return the TonyPlot artifact manifest and pair visual hot-spot claims with numeric extraction or exported data.
 - Give minimal fragments with explicit placeholders.
 - Preserve electrode names across `ELECTRODE`, `CONTACT`, `SOLVE`, and extraction.
 - Require mesh and bias convergence studies for research claims.
@@ -76,7 +103,7 @@ Solve from the bundled references and examples first. Distinguish bundled templa
 
 ## Source scope
 
-Derived from *Atlas User Manual*, Silvaco, June 1, 2020, especially Chapters 2-3, 8, 21-22 and Appendix B.7. Mistake notes are engineering interpretations.
+Derived from *Atlas User Manual*, Silvaco, June 1, 2020, and expanded from the local manuals: *Atlas User's Manual* (April 10, 2018, 1776 pages), *Athena User's Manual* (August 13, 2015, 444 pages), *DeckBuild User's Manual* (February 5, 2018, 241 pages), and *TonyPlot User's Manual* (February 16, 2018, 183 pages). Release-specific defaults and command behavior must be verified against the installed tools. Mistake notes are engineering interpretations.
 
 Local example notes are vendor-pattern summaries from Silvaco example decks, especially the `sic` directory. Do not assume any fixed local path. On each computer, rediscover the installed Silvaco examples before relying on local files.
 

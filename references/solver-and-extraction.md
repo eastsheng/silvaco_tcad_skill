@@ -1,5 +1,8 @@
 # Numerical method, biasing, and extraction
 
+For restart invariants, branch-independent conditioning, and failure classification, also read `atlas-numerics-and-bias-state-machine.md`.
+For exact metric contracts and DeckBuild variable/range behavior, read `deckbuild-extract-and-sweeps.md`. For visual and spatial result audits, read `tonyplot-quantitative-audit.md`.
+
 ## Initialization and method
 
 ```atlas
@@ -45,6 +48,7 @@ Use smaller steps near abrupt current, field, temperature, or charge changes. Sa
 - `OUTPUT <quantities>`: request additional spatial quantities for saved output.
 
 Do not confuse a log file with a spatial solution file.
+For `LAT.TEMP`, reissue `THERMCONTACT` after a restart; the Atlas 2018 manual states thermal contacts are not stored in solution files.
 
 ## Extraction
 
@@ -56,6 +60,8 @@ Use DeckBuild `EXTRACT` on the intended log or structure file. Define all criter
 - leakage: voltage and temperature;
 - peak field/temperature: saved bias point and spatial domain;
 - switching metrics: circuit, parasitics, time window, and integration definition.
+
+Also declare the search or fit bounds, units, 2D width/area normalization, valid result range, multiple-crossing behavior, and an explicit results filename. Request every non-default spatial field with `OUTPUT` before saving the Atlas structure used by Extract or TonyPlot; Atlas `OUTPUT` keywords and Extract quantity names are not interchangeable.
 
 ## Convergence diagnosis
 

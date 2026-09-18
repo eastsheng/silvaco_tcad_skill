@@ -27,7 +27,7 @@ impact aniso sic4h0001
 Then add or remove models based on the experiment:
 
 - add anisotropic `MOBILITY` statements with verified crystal axes;
-- add `INTDEFECTS`/`INTERFACE` for MOS-channel electrostatics and channel mobility;
+- add `INTERFACE` and only an installed-release-verified interface-trap model for MOS-channel electrostatics and channel mobility; do not use `INTDEFECTS` generically because the 2018 manual documents it as a TFT model;
 - add `HCTE` or `HCTE.EL` only when carrier energy transport materially affects the result;
 - add tunneling/trap models only when supported by leakage or transient evidence;
 - add `THERMCONTACT` and explicit thermal material properties for every relevant heat-flow path.
@@ -45,7 +45,7 @@ Then add or remove models based on the experiment:
 | High-field transport | `FLDMOB` | `ALPHAN.FLD`, `TNOMN.FLD`, `DELTAN.FLD`, `N.BETA0`, `N.BETAEXP`; hole equivalents/model | electron defaults listed below | validate high-current and temperature dependence; do not infer hole parameters from electron data |
 | Recombination/lifetime | `SRH` or `CONSRH`, `AUGER` | `TAUN0`, `TAUP0`, trap energy, capture/lifetime doping and temperature coefficients, `AUGN/AUGP` | reliable universal 4H-SiC device defaults not established here | `must-calibrate`; controls conductivity modulation, tail current, latch-up and heat |
 | Avalanche | `IMPACT ANISO SIC4H0001` or verified alternative | `AE/BE/AH/BH` for 0001 and 1120, `N/P.ANISOHW`, orientation, carrier-side flags | confirmed manual defaults below | literature-start only; calibrate BV and temperature trend; mesh-converge corners |
-| MOS interface | `CONTACT`, `INTERFACE`, `INTDEFECTS`, channel `MOBILITY` | gate work function, Qf, Dit(E), capture cross-sections, channel scattering/mobility | no universal defaults for fabricated SiC/SiO2 | `must-calibrate` from C-V/Id-Vg/mobility data before power tests |
+| MOS interface | `CONTACT`, `INTERFACE`, release-verified interface traps, channel `MOBILITY` | gate work function, Qf, Dit(E), capture cross-sections, channel scattering/mobility | no universal defaults for fabricated SiC/SiO2 | `must-calibrate` from C-V/Id-Vg/mobility data before power tests; `INTDEFECTS` requires explicit installed-manual evidence for the intended equation |
 | Ohmic/collector injection | `CONTACT` plus geometry/doping | contact resistance, work function/barrier, surface recombination, collector efficiency | device/process dependent | `must-calibrate`; affects Vce(sat), carrier storage and heat |
 | Lattice heat equation | `LAT.TEMP` | thermal conductivity, heat capacity, thermopower, heat-source flags | model enabled default is false | explicit activation and boundary required |
 | Heat sources | default simple heat or `HEAT.FULL`; `JOULE.HEAT`, `GR.HEAT`, `PT.HEAT` | model flags and numerical discretization | simple `J·E` steady-state heat is default; flux Joule discretization is default | use `HEAT.FULL` for latch-up/turn-off studies unless justified otherwise; compare sensitivity |

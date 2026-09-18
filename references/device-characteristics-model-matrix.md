@@ -24,6 +24,8 @@ Never adjust bandgap, affinity, permittivity, intrinsic-density floors, lifetime
 | 3C-SiC | cubic polytype, substrate/interface orientation, defects | mobility, lifetime, interface, impact coefficients | do not inherit 4H-SiC anisotropy or coefficients; local `powerex10` is only a vendor pattern and its explicit values require revalidation |
 | 6H-SiC | polytype and crystal direction, especially for implants | implant channeling, activation, mobility, lifetime, impact | use 6H-specific datasets; never treat implant examples as 4H electrical calibration |
 | Ga2O3 or user-defined WBG | phase/orientation, user material mapping, thermal conductivity, contacts, trap spectrum | user-defined band parameters, mobility, heat flow, traps, impact model availability | nearly all explicit values are `version-check` plus `must-calibrate`; `USER.DEFAULT` inheritance is only a software scaffold, not physical equivalence |
+| GaAs/AlGaAs/InGaAs HEMT/PHEMT | layer composition/grade, band alignment, spacer/doping, Schottky gate, recess, temperature | heterojunction mobility and saturation, hot carriers, interface charge, avalanche, AC/RF | alignment, mobility, barrier, charge and access/contact resistance are `must-calibrate`; do not transfer GaN parameters |
+| AlGaN/GaN HEMT/MIS-HEMT | barrier composition/thickness, strain/polarization strategy, 2DEG, passivation, buffer/surface traps, contacts | GaN high-field mobility, trap kinetics, avalanche, gate leakage, heat flow | polarization scale/charge, traps, mobility, contacts and thermal boundary are `must-calibrate`; avoid double-counting polarization |
 
 If a requested material is absent from this table, first identify whether the simulator has a built-in material or requires a user-defined material. Do not invent a complete parameter set.
 
@@ -50,10 +52,11 @@ For hysteresis or trapping, run forward and reverse sweeps with a controlled dwe
 | Material/device | Required baseline | Add when relevant | Parameters normally modified |
 | --- | --- | --- | --- |
 | Si MOSFET/IGBT gate channel | concentration/surface mobility such as `CVT` or release-appropriate equivalent, `SRH`, Fermi statistics when degenerate | `AUGER`, `BGN` at high injection/heavy doping; interface traps for measured subthreshold/hysteresis | oxide thickness, gate work function, fixed charge, interface traps, mobility coefficients: `must-calibrate` |
-| 4H-SiC MOS channel | `SRH`, field/concentration mobility, 4H-SiC channel/interface treatment, incomplete ionization when supported/important | `INTDEFECTS`/`INTERFACE`, alternative inversion mobility such as `ALTCVT.N`, temperature dependence | work function, Dit spectrum/cross-sections, Qf, channel mobility/scattering, dopant activation: `must-calibrate`; anisotropy: `version-check` + calibration |
+| 4H-SiC MOS channel | `SRH`, field/concentration mobility, verified 4H-SiC channel/interface treatment, incomplete ionization when supported/important | `INTERFACE`, discrete/continuous interface traps supported by the installed release, alternative inversion mobility such as `ALTCVT.N`, temperature dependence | work function, Dit spectrum/cross-sections, Qf, channel mobility/scattering, dopant activation: `must-calibrate`; anisotropy: `version-check` + calibration. Do not use `INTDEFECTS` generically: the 2018 manual documents it as a TFT model. |
 | 3C/6H-SiC | correct polytype material and mobility/interface model | traps, incomplete ionization, temperature models as supported | every borrowed 4H coefficient must be replaced; polytype data are `literature-start` |
+| HEMT/HFET/PHEMT | heterojunction band alignment, material-scoped mobility/recombination, Schottky or MIS gate, polarization for III-nitrides | buffer/surface traps, gate leakage, self-heating, energy-balance/nonlocal transport | layer composition, sheet density, barrier/work function, fixed/interface charge, traps and access resistance: `must-calibrate` |
 
-Useful command families: `MODELS ... PRINT`, `MOBILITY ...`, `INTDEFECTS`, `INTERFACE QF=...`, `CONTACT NAME=gate WORKFUNCTION=...` or `N.POLY`, `PROBE`, `OUTPUT E.MOB ...`, and `EXTRACT`.
+Useful command families: `MODELS ... PRINT`, `MOBILITY ...`, release-verified interface-trap statements, `INTERFACE QF=...`, `CONTACT NAME=gate WORKFUNCTION=...` or `N.POLY`, `PROBE`, `OUTPUT E.MOB ...`, and `EXTRACT`.
 
 Do not fit Vth by varying Qf, Dit, work function, channel implant, and mobility simultaneously. Calibrate electrostatics first, subthreshold/interface response second, mobility/on-current third.
 

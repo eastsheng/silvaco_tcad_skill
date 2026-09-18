@@ -2,6 +2,8 @@
 
 Read this reference first when a device should be built from a fabrication sequence rather than direct Atlas regions. It summarizes patterns internalized from local Athena 4.2.5 examples, especially power-device, implant, oxidation, and calibration decks. The skill should now use these bundled rules first; revisit local examples only for an unsupported process/module or failed syntax.
 
+For the manual-derived execution/restart contract, read `athena-process-deck-contract.md`; for detailed mesh/geometry rules read `athena-mesh-deposition-etch.md`; for implant/thermal-process physics read `athena-implant-diffusion-oxidation.md`.
+
 ## What Athena adds
 
 Athena can construct geometry and doping through process history:
@@ -71,6 +73,8 @@ deposit aluminum thickness=<tmetal> divisions=<n>
 
 Use explicit vertical divisions for thin oxide/inter-poly layers. Check final physical thickness after oxidation or subsequent etch.
 
+In the Athena 2015 manual, non-Elite deposition is 100% conformal and `DIVISIONS` defaults to 1. Explicitly increase divisions and capture any automatic increase reported by Athena. Do not use conformal deposition as evidence for real step coverage or void formation.
+
 ### Simple mask-edge etch
 
 ```atlas
@@ -119,6 +123,8 @@ implant boron dose=<cm-2> energy=<keV> pearson
 implant arsenic dose=<cm-2> energy=<keV>
 ```
 
+State `CRYSTAL` or `AMORPHOUS`, `TILT`, and `ROTATION` explicitly. The Athena 2015 defaults are crystal, 7 degrees tilt, and 30 degrees rotation; those implicit values are not acceptable as undocumented fabrication assumptions.
+
 ### Angled/crystal-aware implant
 
 ```atlas
@@ -130,10 +136,10 @@ implant <species> dose=<cm-2> energy=<keV> \
 
 ```atlas
 implant <species> dose=<cm-2> energy=<keV> \
-  tilt=<deg> rotation=<deg> bca n.ion=<particles>
+  tilt=<deg> rotation=<deg> bca crystal n.ion=<particles>
 ```
 
-For 4H-SiC aluminum implantation, define the correct material/orientation and use SiC-specific BCA/MC settings and activation data. A silicon implant model is not transferable by changing the substrate name.
+For 4H-SiC aluminum implantation, define the correct material/orientation, `ROT.SUB`, wafer miscut, beam angles and SiC-specific BCA/MC settings and activation data. A silicon implant model is not transferable by changing the substrate name.
 
 ### Anneal/oxidation
 
@@ -145,6 +151,8 @@ diffuse time=<min> temp=<C> wet
 ```
 
 Choose diffusion, activation, clustering/damage and oxidation models appropriate to material and process. SiC dopant diffusion/activation and oxidation differ radically from silicon; treat local SiC implant examples as profile syntax, not a full calibrated SiC MOS process.
+
+The Athena 2015 `EPITAXY` statement is limited to silicon on silicon, inherently 1D, and unsuitable for selective epitaxy. For SiC epi stacks, prefer an Atlas region or a clearly labeled deposited/imported final geometry unless the installed Athena release provides separately verified SiC epitaxy physics.
 
 ## Complex structure patterns internalized
 
@@ -190,6 +198,8 @@ electrode name=drain backside
 structure outfile=<device>.str
 ```
 
+Athena's coordinate `ELECTRODE` selector names the entire conductor region containing the point; it does not define a finite electrode segment. Isolate conductors before naming and place the selector point strictly inside the intended region.
+
 Then optionally remesh:
 
 ```atlas
@@ -203,6 +213,8 @@ mesh infile=<device_remeshed>.str
 ```
 
 After handoff, verify region/material IDs, electrode names and positions, net doping, oxide thickness, interface shape, cell width and backside orientation. Remeshing must not erase narrow layers, merge contacts or smooth critical corners unintentionally.
+
+`STRUCTURE` does not save Athena model or machine-method definitions in the 2015 manual. A resumed process flow must reissue the required `METHOD`, material/impurity/oxide and rate-machine declarations.
 
 ## Required process review output
 
