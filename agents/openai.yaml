@@ -1,4 +1,4 @@
 interface:
   display_name: "SiC Power Device TCAD Research Skill"
   short_description: "MOSFET, IGBT, HEMT and SiC TCAD modeling and reproduction"
-  default_prompt: "Use $sic-power-device-tcad-research-skill to build, reproduce, or diagnose a Silvaco MOSFET, IGBT, HEMT/HFET, PHEMT, GaN FET, or SiC device deck, including structure, mesh, interfaces, contacts, transfer/output/latch-up/breakdown, traps, polarization, electrothermal models, commands, and parameter calibration."
+  default_prompt: "Use $silvaco-tcad-skill to build, reproduce, or diagnose a Silvaco MOSFET, IGBT, HEMT/HFET, PHEMT, GaN FET, or SiC device deck, including structure, mesh, interfaces, contacts, transfer/output/latch-up/breakdown, traps, polarization, electrothermal models, commands, and parameter calibration."

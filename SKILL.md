@@ -1,5 +1,5 @@
 ---
-name: sic-power-device-tcad-research-skill
+name: silvaco-tcad-skill
 description: Silvaco power-device modeling with the priority Atlas, then Athena, then DevEdit, for reproducible MOSFET, IGBT, HEMT/HFET, PHEMT, GaN FET, and complex SiC device decks. Use for local-example reproduction, direct or process-based structures, mesh, gate oxide, electrodes, doping, heterojunctions, polarization, traps, electrothermal models, electrical characteristics, convergence, or nonphysical results, without requiring Victory Process.
 ---
 
@@ -27,6 +27,7 @@ Solve from the bundled references and examples first. Distinguish bundled templa
    - Transfer/output/latch-up/breakdown model and parameter matrix: `references/device-characteristics-model-matrix.md` (read for any electrical-characteristic task)
    - Bulk/doping-dependent thermal conductivity and gate-oxide/collector thermal boundaries: `references/thermal-properties-and-boundaries.md` (read for any self-heating or thermal-interface task)
    - Complete 4H-SiC IGBT electrothermal model stack and Atlas-default audit: `references/sic-igbt-electrothermal-models.md` (read first for SiC IGBT electrothermal simulations)
+   - Almpanis 2024 high-voltage SiC IGBT research lessons: `references/almpanis-2024-sic-igbt-research.md` (read for calibration order, false turn-on, short circuit/latch-up, collector-side optimisation, or 10-40 kV scaling)
    - HEMT layer, polarization, trap, contact, transport and bias protocols: `references/bundled-hemt-models-and-examples.md` (read first for any HEMT/HFET/PHEMT/GaN-FET task)
    - Athena process construction, geometry, mesh, and simulator handoff: `references/athena-complex-structure.md` (read first for process-built structures)
    - Athena 2015 source/version map: `references/athena-2015-manual-map.md` (read for manual provenance, module boundaries, or release-default checks)
@@ -83,6 +84,8 @@ Solve from the bundled references and examples first. Distinguish bundled templa
 22. Model a DeckBuild workflow as a serial process chain followed by independent device-characteristic branches. Do not let transfer, output, breakdown, latch-up, or electrothermal branches inherit unintended state from one another.
 23. Every extracted metric must declare its source state, mathematical criterion, search window, coordinate/material scope, unit, normalization, valid range and failure behavior. Ensure required spatial fields are requested with Atlas `OUTPUT` before `SAVE`.
 24. A TonyPlot image is not sufficient evidence by itself. Preserve numeric source files, simulator and plot versions, `.setx`, overlay order, cutline/cutplane coordinates, transforms, axes/units and export geometry.
+25. When applying research produced in another TCAD simulator, transfer physical relationships and validation logic first. Translate commands or coefficients only after proving equation, units, carrier order, orientation and temperature-law equivalence in the installed Atlas release.
+26. For SiC IGBT short-circuit claims, continue beyond gate turn-off until post-turn-off leakage and temperature clearly decay or a declared failure criterion is met. Classify high-temperature results as validated, interpolated or extrapolated; do not call predictions above the source model's validation ceiling experimentally validated.
 
 ## Output expectations
 
@@ -106,5 +109,7 @@ Solve from the bundled references and examples first. Distinguish bundled templa
 Derived from *Atlas User Manual*, Silvaco, June 1, 2020, and expanded from the local manuals: *Atlas User's Manual* (April 10, 2018, 1776 pages), *Athena User's Manual* (August 13, 2015, 444 pages), *DeckBuild User's Manual* (February 5, 2018, 241 pages), and *TonyPlot User's Manual* (February 16, 2018, 183 pages). Release-specific defaults and command behavior must be verified against the installed tools. Mistake notes are engineering interpretations.
 
 Local example notes are vendor-pattern summaries from Silvaco example decks, especially the `sic` directory. Do not assume any fixed local path. On each computer, rediscover the installed Silvaco examples before relying on local files.
+
+High-voltage SiC IGBT calibration, false-turn-on, short-circuit and collector-side optimisation guidance also distils Ioannis Almpanis, *Silicon Carbide (SiC) Insulated Gate Bipolar Transistors (IGBTs) for High Voltage Applications*, PhD thesis, University of Nottingham, April 2024. The thesis used Sentaurus; its values are research evidence rather than Atlas syntax or defaults.
 
 

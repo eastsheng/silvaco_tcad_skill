@@ -86,7 +86,7 @@ SEDATOOLS_HOME
 ## Example Prompts
 
 ```text
-用 $sic-power-device-tcad-research-skill 参考本机 Silvaco sic 示例，写一个 4H-SiC SBD 反向击穿 deck。
+用 $silvaco-tcad-skill 参考本机 Silvaco sic 示例，写一个 4H-SiC SBD 反向击穿 deck。
 ```
 
 ```text

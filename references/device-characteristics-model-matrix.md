@@ -1,5 +1,7 @@
 # Device Characteristics, Material Models, Commands, and Parameter Governance
 
+For high-voltage SiC IGBT calibration order, false turn-on, short-circuit/latch-up, and multi-objective collector-side optimisation distilled from Almpanis (2024), also read `almpanis-2024-sic-igbt-research.md`.
+
 Read this reference for MOSFET/IGBT transfer, output, latch-up, and breakdown work. Commands target Atlas and are informed by bundled rules plus local vendor examples; confirm exact keyword spelling and availability only when the installed release rejects a command. Example coefficients are evidence of vendor-example usage, not recommended calibration values.
 
 ## Parameter modification levels

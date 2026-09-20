@@ -2,6 +2,8 @@
 
 Read this reference first for any 4H-SiC IGBT self-heating, short-circuit, latch-up, turn-off, or electrothermal breakdown task. It defines the complete model-selection audit; it does not claim that every installed-release default is physically calibrated for a particular wafer or device.
 
+For the Almpanis experimental-calibration ladder, false-turn-on mechanism, three-stage short-circuit interpretation, post-turn-off failure, and four-step collector-side profile, also read `almpanis-2024-sic-igbt-research.md`.
+
 ## Default-value authority
 
 Use this evidence order:
